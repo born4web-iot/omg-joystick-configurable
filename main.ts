@@ -5,20 +5,6 @@ function joystickMovingPoint () {
     basic.pause(100)
     led.unplot(x_pos, y_pos)
 }
-function initialCOnfig () {
-    RADIO_GROUP = 5
-    CONFIG_PARAM = 0
-    X_MAX = 4
-    Y_MAX = 4
-    BTN_PAUSE = 200
-    pins.setPull(DigitalPin.P13, PinPullMode.PullUp)
-    pins.setPull(DigitalPin.P14, PinPullMode.PullUp)
-    pins.setPull(DigitalPin.P15, PinPullMode.PullUp)
-    pins.setPull(DigitalPin.P16, PinPullMode.PullUp)
-    x_pos = 2
-    y_pos = 2
-    radio.setGroup(RADIO_GROUP)
-}
 input.onButtonPressed(Button.A, function () {
     if (CONFIG_PARAM == 1) {
         RADIO_GROUP += -1
@@ -26,6 +12,7 @@ input.onButtonPressed(Button.A, function () {
             RADIO_GROUP = 0
         }
         showRadioGroup()
+        radio.setGroup(RADIO_GROUP)
     }
     if (CONFIG_PARAM == 2) {
         X_MAX += -1
@@ -57,6 +44,7 @@ input.onButtonPressed(Button.B, function () {
             RADIO_GROUP = 255
         }
         showRadioGroup()
+        radio.setGroup(RADIO_GROUP)
     }
     if (CONFIG_PARAM == 2) {
         X_MAX += 1
@@ -73,6 +61,20 @@ input.onButtonPressed(Button.B, function () {
         showMaxY()
     }
 })
+function initialConfig () {
+    RADIO_GROUP = 5
+    CONFIG_PARAM = 0
+    X_MAX = 4
+    Y_MAX = 4
+    BTN_PAUSE = 200
+    pins.setPull(DigitalPin.P13, PinPullMode.PullUp)
+    pins.setPull(DigitalPin.P14, PinPullMode.PullUp)
+    pins.setPull(DigitalPin.P15, PinPullMode.PullUp)
+    pins.setPull(DigitalPin.P16, PinPullMode.PullUp)
+    x_pos = 2
+    y_pos = 2
+    radio.setGroup(RADIO_GROUP)
+}
 function pullButtonsShowIcons () {
     if (pins.digitalReadPin(DigitalPin.P13) == 0) {
         basic.showLeds(`
@@ -132,23 +134,23 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     }
     if (CONFIG_PARAM == 1) {
         basic.showString("G")
-        basic.pause(500)
+        basic.pause(200)
         showRadioGroup()
     }
     if (CONFIG_PARAM == 2) {
         basic.showString("X")
-        basic.pause(500)
+        basic.pause(200)
         showMaxX()
     }
     if (CONFIG_PARAM == 3) {
         basic.showString("Y")
-        basic.pause(500)
+        basic.pause(200)
         showMaxY()
     }
 })
 let BTN_PAUSE = 0
-let CONFIG_PARAM = 0
 let RADIO_GROUP = 0
+let CONFIG_PARAM = 0
 let Y_MAX = 0
 let y_pos = 0
 let X_MAX = 0
@@ -156,7 +158,7 @@ let x_pos = 0
 basic.showIcon(IconNames.SmallDiamond)
 basic.pause(2000)
 basic.clearScreen()
-initialCOnfig()
+initialConfig()
 basic.forever(function () {
     joystickMovingPoint()
     pullButtonsShowIcons()
